@@ -22,7 +22,7 @@ export default function ProfileOrdersPage() {
 
     async function loadOrders() {
       try {
-        const response = await fetch("http://localhost:5000/orders/my-orders", {
+        const response = await fetch("/api/orders/my-orders", {
           credentials: "include",
         });
         const data = await response.json();

@@ -10,7 +10,7 @@ export default function AdminMessagesPage() {
   useEffect(() => {
     async function fetchMessages() {
       try {
-        const res = await fetch("http://localhost:5000/messages");
+        const res = await fetch("/api/messages");
         if (!res.ok) throw new Error("Failed to fetch messages");
         const data = await res.json();
         setMessages(data);

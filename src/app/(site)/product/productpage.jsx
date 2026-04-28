@@ -27,7 +27,7 @@ export default function ProductPage() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const res = await fetch("http://localhost:5000/products");
+        const res = await fetch("/api/products");
         const data = await res.json();
 
         const productList = Array.isArray(data)

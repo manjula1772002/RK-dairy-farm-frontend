@@ -32,7 +32,7 @@ export default function RegisterForm() {
   async function submitRegister(formData) {
     // send it to my /server/register end point using fetch
     try {
-      const response = await fetch("http://localhost:5000/register", {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

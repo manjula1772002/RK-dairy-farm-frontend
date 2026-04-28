@@ -40,7 +40,7 @@ export default function AuthProvider({ children }) {
 
   const refreshSession = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:5000/me", {
+      const response = await fetch("/api/me", {
         method: "GET",
         credentials: "include",
       });
@@ -82,7 +82,7 @@ export default function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      await fetch("http://localhost:5000/logout", {
+      await fetch("/api/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -71,7 +71,7 @@ export default function PurchaseForm({ productId }) {
 
     async function loadProduct() {
       try {
-        const response = await fetch("http://localhost:5000/products");
+        const response = await fetch("/api/products");
         const data = await response.json();
         const products = Array.isArray(data)
           ? data
@@ -157,7 +157,7 @@ export default function PurchaseForm({ productId }) {
             address: validation.data,
           };
 
-      const response = await fetch("http://localhost:5000/orders", {
+      const response = await fetch("/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
