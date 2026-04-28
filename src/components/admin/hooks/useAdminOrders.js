@@ -9,7 +9,7 @@ export function useAdminOrders() {
   const loadOrders = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/orders/admin/all", {
+      const res = await fetch("/api/orders/admin/all", {
         credentials: "include",
       });
       const data = await res.json();
@@ -29,7 +29,7 @@ export function useAdminOrders() {
 
   const updateStatus = async (orderId, orderStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/orders/admin/${orderId}/status`, {
+      const res = await fetch(`/api/orders/admin/${orderId}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

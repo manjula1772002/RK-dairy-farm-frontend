@@ -11,7 +11,7 @@ export function useAdminProducts() {
   const loadProducts = async () => {
     try {
       setProductsLoading(true);
-      const res = await fetch("http://localhost:5000/admin/products", {
+      const res = await fetch("/api/admin/products", {
         credentials: "include",
       });
       const data = await res.json();
@@ -29,7 +29,7 @@ export function useAdminProducts() {
   };
 
   const deleteProduct = async (id) => {
-    await fetch(`http://localhost:5000/admin/products/${id}`, {
+    await fetch(`/api/admin/products/${id}`, {
       method: "DELETE",
       credentials: "include",
     });

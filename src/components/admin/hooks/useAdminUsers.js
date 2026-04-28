@@ -9,7 +9,7 @@ export function useAdminUsers() {
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/admin/users", {
+      const res = await fetch("/api/admin/users", {
         credentials: "include",
       });
       const data = await res.json();
