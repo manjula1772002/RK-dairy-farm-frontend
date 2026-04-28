@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+.active{
+  @apply rounded bg-green-700 text-white px-2 py-1
+}
+.active img{
+  @apply invert
+}
+.main_sec{
+  position: relative;
+  background-image: url(/hero2.png);
+  background-repeat: no-repeat;
+  background-size:cover;
+  background-position:center; 
+  background-color: darkgreen; 
+}
+/* overlay */
+.main_sec::before {
+  content: "";
+  position: absolute;
+  inset: 0;   /* top left right and bottom shortcut  */
+  background: rgba(0, 0, 0, 0.4);
+}
+.main_sec .main_div{
+   position: relative;
+  z-index: 1;
+  font-size: 40px;
+}
+.head_li>li{
+  flex-shrink: 0;
+}
