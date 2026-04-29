@@ -40,7 +40,11 @@ export default function AuthProvider({ children }) {
 
   const refreshSession = useCallback(async () => {
     try {
-      const response = await fetch("/api/me", {
+      // const response = await fetch("/api/me",
+         const proxyUrl = process.env.PROXY_URL || "http://localhost:5000";
+
+      const response = await fetch(`${proxyUrl}/me`,
+        {
         method: "GET",
         credentials: "include",
       });
@@ -82,7 +86,12 @@ export default function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      await fetch("/api/logout", {
+        const proxyUrl = process.env.PROXY_URL || "http://localhost:5000";
+
+     
+       await fetch(`${proxyUrl}/logout`, 
+      // await fetch("/api/logout",
+         {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

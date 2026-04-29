@@ -11,9 +11,13 @@ export function useAdminProducts() {
   const loadProducts = async () => {
     try {
       setProductsLoading(true);
-      const res = await fetch("/api/admin/products", {
-        credentials: "include",
-      });
+      // const res = await fetch("/api/admin/products",
+      const proxyUrl = process.env.PROXY_URL || "http://localhost:5000";
+
+      const res = await fetch(`${proxyUrl}/products`,
+        {
+          credentials: "include",
+        });
       const data = await res.json();
       setProducts(data.products || []);
       setInventoryStats({

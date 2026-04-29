@@ -27,7 +27,11 @@ export default function ProductPage() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const res = await fetch("/api/products");
+        // const res = await fetch("/api/products");
+        //  const res = await fetch("http://localhost:5000/products");
+          const proxyUrl = process.env.PROXY_URL || "http://localhost:5000";
+
+       const res = await fetch(`${proxyUrl}/products`);
         const data = await res.json();
 
         const productList = Array.isArray(data)
@@ -222,7 +226,7 @@ export default function ProductPage() {
               <p className="text-green-600 font-bold mt-3 text-lg">
                 ₹{option.price}
               </p>
-
+              <div className="flex flex-col">
               {cartCount[item._id] > 0 ? (
                 <div className="flex items-center justify-between mt-3 border rounded-lg overflow-hidden">
                   <button
@@ -246,7 +250,7 @@ export default function ProductPage() {
               ) : (
                 <button
                   onClick={() => handleAddToCart(item, option)}
-                  className="w-full mt-3 py-2 bg-green-700 text-white rounded-full"
+                  className="w-full mt-2 py-2 bg-green-700 text-white rounded"
                 >
                   Add
                 </button>
@@ -254,10 +258,11 @@ export default function ProductPage() {
 
               <button
                 onClick={() => handleBuyNow(item, option)}
-                className="w-full mt-2 py-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-600 transition font-semibold"
+                className="w-full mt-2 py-2 bg-emerald-500 text-white rounded hover:bg-emerald-600 transition font-semibold"
               >
                 Buy Now
               </button>
+              </div>
             </div>
           );
         })}

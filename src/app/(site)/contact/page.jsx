@@ -37,7 +37,12 @@ export default function ContactPage() {
     }
 
     try {
-      const res = await fetch("/api/messages", {
+
+      const proxyUrl = process.env.PROXY_URL || "http://localhost:5000";
+
+       const res = await fetch(`${proxyUrl}/messages`,
+      // const res = await fetch("/api/messages", 
+        {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

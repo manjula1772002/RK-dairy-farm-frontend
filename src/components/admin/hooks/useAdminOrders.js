@@ -29,12 +29,16 @@ export function useAdminOrders() {
 
   const updateStatus = async (orderId, orderStatus) => {
     try {
-      const res = await fetch(`/api/orders/admin/${orderId}/status`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ orderStatus }),
-      });
+      // const res = await fetch(`/api/orders/admin/${orderId}/status`,
+      const proxyUrl = process.env.PROXY_URL || "http://localhost:5000";
+
+      const res = await fetch(`${proxyUrl}/orders/admin/${orderId}/status`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ orderStatus }),
+        });
       const data = await res.json();
 
       if (!res.ok) {

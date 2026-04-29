@@ -90,7 +90,10 @@ export default function PurchaseForm({ productId }) {
 
   const selectedOption = useMemo(() => {
     if (!product) return null;
-    return product.options.find((option) => option.label === optionLabel) || product.options[0];
+    return (
+      product.options.find((option) => option.label === optionLabel) ||
+      product.options[0]
+    );
   }, [optionLabel, product]);
 
   const summaryItems = useMemo(() => {
@@ -156,15 +159,19 @@ export default function PurchaseForm({ productId }) {
             quantity,
             address: validation.data,
           };
+      const proxyUrl = process.env.PROXY_URL || "http://localhost:5000";
 
-      const response = await fetch("/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(`${proxyUrl}/orders`,
+        // const response = await fetch("/api/orders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(body),
         },
-        credentials: "include",
-        body: JSON.stringify(body),
-      });
+      );
 
       const data = await response.json();
 
@@ -172,13 +179,13 @@ export default function PurchaseForm({ productId }) {
         setPageError(data.message || "Failed to place order.");
         return;
       }
- 
+
       if (isCartCheckout) {
         localStorage.removeItem("cart");
         setCartItems([]);
         window.dispatchEvent(new Event("cartUpdated"));
       }
-    
+
       router.push("/profile/orders");
     } catch {
       setPageError("Failed to place order.");
@@ -198,9 +205,14 @@ export default function PurchaseForm({ productId }) {
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10">
       <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.4fr_0.8fr]">
-        <form onSubmit={handleSubmit} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+        >
           <h1 className="text-3xl font-bold text-gray-900">Delivery Address</h1>
-          <p className="mt-2 text-sm text-gray-500">Payment method is Cash on Delivery only.</p>
+          <p className="mt-2 text-sm text-gray-500">
+            Payment method is Cash on Delivery only.
+          </p>
 
           {pageError ? (
             <div className="mt-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -210,51 +222,102 @@ export default function PurchaseForm({ productId }) {
 
           <div className="mt-6 grid gap-5 md:grid-cols-2">
             <div>
-              <Label htmlFor="fullName" required>Full Name</Label>
-              <Input id="fullName" name="fullName" value={address.fullName} onChange={handleChange} />
+              <Label htmlFor="fullName" required>
+                Full Name
+              </Label>
+              <Input
+                id="fullName"
+                name="fullName"
+                value={address.fullName}
+                onChange={handleChange}
+              />
               <FormError message={errors.fullName?.[0]} />
             </div>
 
             <div>
-              <Label htmlFor="phone" required>Phone Number</Label>
-              <Input id="phone" name="phone" value={address.phone} onChange={handleChange} />
+              <Label htmlFor="phone" required>
+                Phone Number
+              </Label>
+              <Input
+                id="phone"
+                name="phone"
+                value={address.phone}
+                onChange={handleChange}
+              />
               <FormError message={errors.phone?.[0]} />
             </div>
 
             <div>
               <Label htmlFor="houseNo">House No</Label>
-              <Input id="houseNo" name="houseNo" value={address.houseNo} onChange={handleChange} required={false} />
+              <Input
+                id="houseNo"
+                name="houseNo"
+                value={address.houseNo}
+                onChange={handleChange}
+                required={false}
+              />
               <FormError message={errors.houseNo?.[0]} />
             </div>
 
             <div>
-              <Label htmlFor="pincode" required>Pincode</Label>
-              <Input id="pincode" name="pincode" value={address.pincode} onChange={handleChange} />
+              <Label htmlFor="pincode" required>
+                Pincode
+              </Label>
+              <Input
+                id="pincode"
+                name="pincode"
+                value={address.pincode}
+                onChange={handleChange}
+              />
               <FormError message={errors.pincode?.[0]} />
             </div>
 
             <div className="md:col-span-2">
-              <Label htmlFor="street" required>Street Address</Label>
-              <TextArea id="street" name="street" value={address.street} onChange={handleChange} required />
+              <Label htmlFor="street" required>
+                Street Address
+              </Label>
+              <TextArea
+                id="street"
+                name="street"
+                value={address.street}
+                onChange={handleChange}
+                required
+              />
               <FormError message={errors.street?.[0]} />
             </div>
 
             <div>
-              <Label htmlFor="city" required>City</Label>
-              <Input id="city" name="city" value={address.city} onChange={handleChange} />
+              <Label htmlFor="city" required>
+                City
+              </Label>
+              <Input
+                id="city"
+                name="city"
+                value={address.city}
+                onChange={handleChange}
+              />
               <FormError message={errors.city?.[0]} />
             </div>
 
             <div>
-              <Label htmlFor="state" required>State</Label>
-              <Input id="state" name="state" value={address.state} onChange={handleChange} />
+              <Label htmlFor="state" required>
+                State
+              </Label>
+              <Input
+                id="state"
+                name="state"
+                value={address.state}
+                onChange={handleChange}
+              />
               <FormError message={errors.state?.[0]} />
             </div>
           </div>
 
           <div className="mt-6 rounded-xl border border-green-200 bg-green-50 p-4">
             <p className="font-semibold text-green-800">Cash on Delivery</p>
-            <p className="text-sm text-green-700">Pay after your order reaches your address.</p>
+            <p className="text-sm text-green-700">
+              Pay after your order reaches your address.
+            </p>
           </div>
 
           <button
@@ -271,14 +334,25 @@ export default function PurchaseForm({ productId }) {
 
           <div className="mt-5 space-y-4">
             {summaryItems.map((item) => (
-              <div key={`${item._id}-${item.label}`} className="flex gap-3 border-b border-gray-100 pb-4">
+              <div
+                key={`${item._id}-${item.label}`}
+                className="flex gap-3 border-b border-gray-100 pb-4"
+              >
                 {item.image ? (
-                  <img src={item.image} alt={item.name} className="h-16 w-16 rounded-lg object-cover" />
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="h-16 w-16 rounded-lg object-cover"
+                  />
                 ) : null}
                 <div className="flex-1">
                   <p className="font-semibold text-gray-900">{item.name}</p>
-                  <p className="text-sm text-gray-500">{item.label} x {item.quantity}</p>
-                  <p className="mt-1 font-semibold text-green-700">Rs.{item.price * item.quantity}</p>
+                  <p className="text-sm text-gray-500">
+                    {item.label} x {item.quantity}
+                  </p>
+                  <p className="mt-1 font-semibold text-green-700">
+                    Rs.{item.price * item.quantity}
+                  </p>
                 </div>
               </div>
             ))}

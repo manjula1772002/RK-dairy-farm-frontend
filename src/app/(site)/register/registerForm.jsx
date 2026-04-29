@@ -32,13 +32,17 @@ export default function RegisterForm() {
   async function submitRegister(formData) {
     // send it to my /server/register end point using fetch
     try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const proxyUrl = process.env.PROXY_URL || "http://localhost:5000";
+
+      const response = await fetch(`${proxyUrl}/register`,
+        // const response = await fetch("/api/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
 
       const data = await response.json();
       alert(data.message || data.error);

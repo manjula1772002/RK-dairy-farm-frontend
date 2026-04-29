@@ -9,9 +9,13 @@ export function useAdminUsers() {
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/admin/users", {
-        credentials: "include",
-      });
+      // const res = await fetch("/api/admin/users",
+      const proxyUrl = process.env.PROXY_URL || "http://localhost:5000";
+
+      const res = await fetch(`${proxyUrl}/users`,
+        {
+          credentials: "include",
+        });
       const data = await res.json();
 
       if (!res.ok) {
